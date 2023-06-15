@@ -1,0 +1,191 @@
+const bookSchema = require("../models/books");
+const userSchema = require("../models/user");
+
+exports.addBook = async (req, res) => {
+    try {
+        const BibNum = req.body.BibNum;
+        const Title = req.body.Title;
+        const ItemCount = req.body.ItemCount;
+        // const password = req.body.password
+        const Author = req.body.Author;
+        const ISBN = req.body.ISBN;
+        const Publisher = req.body.Publisher;
+        const Genre = req.body.Genre;
+
+        let doc = await bookSchema.findOne({ ISBN: ISBN })
+        if (!doc) {
+            const book = new bookSchema({
+                BibNum: BibNum,
+                Title: Title,
+                ItemCount: ItemCount,
+                Author: Author,
+                ISBN: ISBN,
+                Publisher: Publisher,
+                Genre: Genre
+            });
+            await book.save();
+            return res.status(200).json({ msg: "Book Added SuccessFully" });
+
+        } else if (doc) {
+            return res.status(400).json({ msg: " Book Already Exist" });
+        }
+    }
+    catch (error) {
+        throw error;
+    }
+};
+
+exports.getAllBooks = async (req, res) => {
+    try {
+        const books = await bookSchema.find();
+        return res.status(200).json({ books });
+    } catch (error) {
+        throw error;
+    }
+};
+
+exports.searchBooks = async (req, res) => {
+    try {
+        const searchText = req.params.id;
+        const regex = new RegExp(searchText, 'i'); // 'i' flag for case-insensitive search
+        const books = await bookSchema.find({ Title: { $regex: regex } }).limit(4);
+        res.status(200).json({ books });
+    } catch (error) {
+        throw error;
+    }
+};
+
+
+exports.addToCart = async (req, res) => {
+    try {
+        const { username } = req.body;
+        const books = req.body.books;
+        if (!books || !Array.isArray(books) || books.length === 0) {
+            return res.status(400).json({ msg: "Invalid books array" });
+        }
+
+        const user = await userSchema.findOne({ username });
+
+        if (!user) {
+            return res.status(400).json({ msg: "User not found" });
+        }
+
+        for (let i = 0; i < books.length; i++) {
+            const ISBN = books[i];
+            const book = await bookSchema.findOne({ ISBN });
+
+            if (!book) {
+                return res.status(400).json({ msg: `Book with ISBN ${ISBN} not found` });
+            }
+
+            if (book.ItemCount > 0) {
+                // Decrease item count of the book
+                // book.ItemCount -= 1;
+                // await book.save();
+
+                // Add ISBN to user's cart
+                user.cart.push(ISBN);
+            } else {
+                return res.status(400).json({ msg: `Book with ISBN ${ISBN} is out of stock` });
+            }
+        }
+
+        await user.save();
+
+        return res.status(200).json({ msg: "Books added to cart successfully" });
+    } catch (error) {
+        throw error;
+    }
+};
+
+
+
+
+exports.checkout = async (req, res) => {
+
+    try {
+        const { username, duedate } = req.body;
+        console.log(username);
+        const user = await userSchema.findOne({ username });
+
+        if (!user) {
+            return res.status(400).json({ msg: "User not found" });
+        }
+
+        const booksInCart = user.cart;
+        const borrowedBooks = [];
+
+        for (let i = 0; i < booksInCart.length; i++) {
+            const ISBN = booksInCart[i];
+            const book = await bookSchema.findOne({ ISBN });
+
+            if (!book) {
+                return res.status(400).json({ msg: `Book with ISBN ${ISBN} not found` });
+            }
+
+            if (book.ItemCount > 0) {
+                // Decrease item count of the book
+                book.ItemCount -= 1;
+                await book.save();
+
+                // Add book to borrowed array
+                borrowedBooks.push({
+                    isbn: book.ISBN,
+                    takenDate: new Date(),// Set the due date as per your requirements
+                    dueDate: duedate// Set the due date as per your requirements
+                });
+            } else {
+                return res.status(400).json({ msg: `Book with ISBN ${ISBN} is out of stock` });
+            }
+        }
+
+        // Empty the user's cart and update the borrowed books
+        user.cart = [];
+        user.borrowed = [...user.borrowed, ...borrowedBooks];
+        await user.save();
+
+        return res.status(200).json({ msg: "Checkout successful" });
+    } catch (error) {
+        throw error;
+    }
+
+};
+
+exports.returnBooks = async (req, res) => {
+    try {
+        const { username, isbn } = req.body;
+
+        // Find the user
+        const user = await userSchema.findOne({ username });
+
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+
+        // Find the books with the provided ISBNs
+        const books = await bookSchema.find({ ISBN: { $in: isbn } });
+
+        if (books.length === 0) {
+            return res.status(404).json({ msg: 'No books found with the provided ISBN' });
+        }
+
+        // Remove the books from the user's borrowed array
+        user.borrowed = user.borrowed.filter(book => !isbn.includes(book.isbn));
+
+        // Increase the itemCount of the returned books
+        for (const book of books) {
+            book.ItemCount = 1;
+            await book.save();
+        }
+
+        // Save the updated user
+        await user.save();
+
+        return res.status(200).json({ msg: 'Books returned successfully' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ msg: 'Internal Server Error' });
+    }
+}
+
+
