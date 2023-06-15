@@ -2,6 +2,20 @@ const passport = require("passport");
 const userSchema = require("../models/user");
 const bcrypt = require("bcryptjs");
 const genUID = require("./generateUID")
+
+exports.allUser = async (req, res) => {
+    try {
+        // Retrieve the list of users from the database
+        const users = await userSchema.find();
+        console.log(users);
+        // Return the list of users as the API response
+        return res.status(200).json(users);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ msg: 'Internal Server Error' });
+    }
+};
+
 exports.registerUser = async (req, res) => {
     try {
         const name = req.body.name;

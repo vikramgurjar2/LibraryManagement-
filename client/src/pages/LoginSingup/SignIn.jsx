@@ -21,7 +21,6 @@ const Signin = () => {
         withCredentials: true,
       })
       .then((response) => {
-        //   window.history.replaceState(null, "", "/");
         console.log(response);
         var message = response.data.message;
         var status = response.data.status;
@@ -33,9 +32,8 @@ const Signin = () => {
             pauseOnFocusLoss: false,
             draggable: true,
             textAlign: "center",
-            // theme: "dark",
           });
-          // window.location.reload();
+          window.location.reload();
         } else if (status === "202") {
           toast.warn(`${message}`, {
             position: "top-center",
@@ -64,54 +62,103 @@ const Signin = () => {
   const img1 =
     "https://github.com/AnuragRoshan/images/blob/main/Lovepik_com-450098997-Account%20login%20flat%20illustration.png?raw=true";
   return (
+    // <div className="login-top">
+    //   <div>
+    //     <div className="login-form-top display-flex-row">
+    //       <div className="login-form-right">
+    //         {/* <div className="">
+    //           <img src={img1} style={{ width: "50xrem" }} alt="" srcset="" />
+    //         </div> */}
+    //         <div className="login-new-user">
+    //           {/* New User ?<a href="">Sign Up</a> */}
+    //         </div>
+    //       </div>
+    //       <div className="login-form-right">
+    //         <div className="login-title" style={{ textAlign: "center" }}>
+    //           <h2>LOGIN</h2>
+    //         </div>
+    //         <div className="login-form">
+    //           <div class="login-field">
+    //             <input
+    //               type="text"
+    //               name="username"
+    //               class="login-input"
+    //               placeholder="Username"
+    //               onChange={(e) => handleInputs(e)}
+    //             />
+    //           </div>
+    //           <div class="login-field ">
+    //             <input
+    //               type="password"
+    //               class="login-input"
+    //               placeholder="Password"
+    //               name="password"
+    //               onChange={(e) => handleInputs(e)}
+    //             />
+    //           </div>
+    //         </div>
+    //         <div className="">
+    //           <button
+    //             type="submit"
+    //             className="btn"
+    //             style={{ backgroundColor: "grey" }}
+    //             onClick={() => submitForm()}
+    //           >
+    //             Login
+    //           </button>
+    //           <ToastContainer />
+    //         </div>
+    //       </div>
+    //     </div>
+    //   </div>
+    // </div>
+
     <div className="login-top">
-      <div>
-        <div className="login-form-top display-flex-row">
-          <div className="login-form-right">
-            {/* <div className="">
-              <img src={img1} style={{ width: "50xrem" }} alt="" srcset="" />
-            </div> */}
-            <div className="login-new-user">
-              {/* New User ?<a href="">Sign Up</a> */}
-            </div>
+      <div className="login-inner-top-left">
+        <div className="login-title">bookWise</div>
+        <div className="login-title-below">Login To Your Account</div>
+        <div className="login-signup-call">
+          Dont Have Account ? <a href="/signup">SignUp</a>
+        </div>
+        <div className="login-form">
+          <div class="login-field">
+            <input
+              type="text"
+              name="username"
+              class="login-input"
+              placeholder="Email"
+              onChange={(e) => handleInputs(e)}
+            />
           </div>
-          <div className="login-form-right">
-            <div className="login-title" style={{ textAlign: "center" }}>
-              <h2>LOGIN</h2>
-            </div>
-            <div className="login-form">
-              <div class="login-field">
-                <i class="login-icon fas fa-user"> </i>
-                <input
-                  type="text"
-                  name="username"
-                  class="login-input"
-                  placeholder="Username"
-                  onChange={(e) => handleInputs(e)}
-                />
-              </div>
-              <div class="login-field ">
-                <input
-                  type="password"
-                  class="login-input"
-                  placeholder="Password"
-                  name="password"
-                  onChange={(e) => handleInputs(e)}
-                />
-              </div>
-            </div>
-            <div className="">
-              <button
-                type="submit"
-                className="btn"
-                style={{ backgroundColor: "grey" }}
-                onClick={() => submitForm()}
-              >
-                Login
-              </button>
-              <ToastContainer />
-            </div>
+          <div class="login-field ">
+            <input
+              type="password"
+              class="login-input"
+              placeholder="Password"
+              name="password"
+              onChange={(e) => handleInputs(e)}
+            />
           </div>
+          <div className="land-button">
+            <div
+              className="landing-button-hover"
+              style={{ marginBlockStart: "1rem", cursor: "pointer" }}
+              onClick={() => submitForm()}
+            >
+              <span>SignIn</span>
+            </div>
+            <ToastContainer />
+          </div>
+        </div>
+      </div>
+      <div className="login-inner-top-right">
+        <div>
+          <img
+            className="login-img"
+            src="https://raw.githubusercontent.com/AnuragRoshan/images/7bba2de48484241154721a9ac693a753e3927570/undraw_notebook_re_id0r.svg"
+            alt=""
+            srcset=""
+          />
         </div>
       </div>
     </div>

@@ -84,7 +84,10 @@ exports.addToCart = async (req, res) => {
                 // await book.save();
 
                 // Add ISBN to user's cart
-                user.cart.push(ISBN);
+                // user.cart.push(ISBN);
+                user.cart.push({
+                    isbn: book.ISBN
+                });
             } else {
                 return res.status(400).json({ msg: `Book with ISBN ${ISBN} is out of stock` });
             }
@@ -189,3 +192,88 @@ exports.returnBooks = async (req, res) => {
 }
 
 
+exports.removeFromCart = async (req, res) => {
+    try {
+        const { username, isbn } = req.body;
+
+        // Find the user
+        const user = await userSchema.findOne({ username });
+
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+
+        // Remove the book from the user's cart
+        user.cart = user.cart.filter((book) => book.isbn !== isbn);
+
+        // Save the updated user
+        await user.save();
+
+        return res.status(200).json({ msg: 'Book removed from cart successfully' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ msg: 'Internal Server Error' });
+    }
+};
+
+exports.filter = async (req, res) => {
+    try {
+        const genre = req.params.genre;
+        const year = req.params.year;
+        const title = req.params.title;
+
+        const query = {};
+
+        // Apply genre filter
+        if (genre !== 'all') {
+            query.genre = genre;
+        }
+
+        // Apply year filter
+        if (year !== 'all') {
+            query.year = year;
+        }
+
+        // Apply title filter
+        if (title !== 'all') {
+            query.title = { $regex: title, $options: 'i' };
+        }
+
+        // Find books based on the filter criteria
+        const books = await bookSchema.find(query);
+
+        return res.status(200).json({ books });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+exports.booksInCart = async (req, res) => {
+    try {
+        const { username } = req.body;
+
+        // Find the user
+        const user = await userSchema.findOne({ username });
+
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+
+        // Extract ISBNs from the user's cart
+        const isbnList = user.cart.map(book => book.isbn);
+
+        // Find the books based on the extracted ISBNs
+        const books = await bookSchema.find({ ISBN: { $in: isbnList } });
+
+        if (books.length === 0) {
+            return res.status(404).json({ msg: 'No books found' });
+        }
+
+        // Send the book details to the client
+        return res.status(200).json({ books });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ msg: 'Internal Server Error' });
+    }
+};
