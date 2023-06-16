@@ -8,6 +8,7 @@ const bookController = require("../controller/bookAPI");
 // user api
 router.get("/allUser", userController.allUser);
 router.post("/register", userController.registerUser);
+router.post("/updateUser", userController.updateUser);
 router.post("/login", userController.loginUser);
 router.post("/logout", userController.logout);
 router.get("/logedinuser", userController.userDetails);

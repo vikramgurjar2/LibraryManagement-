@@ -13,6 +13,8 @@ const userSchema = mongoose.Schema(
         password: { type: String, required: true },
         userType: { type: String, required: true },
         phone: { type: String, required: true },
+        dob: { type: String },
+        address: { type: String },
         uniqueId: { type: String, required: true },
         borrowed: []
         , cart: [],

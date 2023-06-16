@@ -75,7 +75,8 @@ const Lists = ({ user }) => {
     <div
       style={{
         display: "flex",
-        border: "1px solid grey",
+        // border: "1px solid grey",
+        boxShadow: "1px 1px 21px -3px rgba(0,0,0,10.75)",
         flexDirection: "column",
         justifyContent: "center",
         margin: "1rem",

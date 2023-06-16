@@ -54,6 +54,34 @@ exports.registerUser = async (req, res) => {
     }
 };
 
+exports.updateUser = async (req, res) => {
+    try {
+        const { name, username, uniqueId, phone, address } = req.body;
+        console.log(req.body.name);
+        console.log(req.body.username);
+        console.log(req.body.phone);
+        console.log(req.body.address);
+        // Find the user with the specified uid
+        const user = await userSchema.findOne({ uniqueId });
+
+        if (!user) {
+            return res.status(202).json({ msg: "User not found" });
+        }
+
+        // Update the user's information
+        user.name = name;
+        user.username = username;
+        user.phone = phone;
+        user.address = address;
+
+        // Save the updated user to the database
+        await user.save();
+
+        return res.status(200).json({ msg: "User information updated successfully" });
+    } catch (error) {
+        return res.status(500).json({ msg: "Internal server error" });
+    }
+};
 
 
 
