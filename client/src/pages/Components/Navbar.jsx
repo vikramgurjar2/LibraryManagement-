@@ -13,7 +13,10 @@ const Navbar = () => {
   };
 
   const handleRecentlyAddedClick = () => {
-    navigate("/info");
+    navigate("/profile");
+  };
+  const handelCart = () => {
+    navigate("/cart");
   };
   const handleLogout = async () => {
     await axios
@@ -62,6 +65,7 @@ const Navbar = () => {
                 fontSize: "2.4rem",
                 marginRight: "25rem",
                 fontWeight: "500",
+                cursor: "pointer",
               }}
             >
               bookWise
@@ -73,13 +77,13 @@ const Navbar = () => {
             </div>
           </div>
           <div className="nav-inner-element">
-            <div className="linked" onClick={handleRecentlyAddedClick}>
+            <div className="linked" onClick={handelCart}>
               Cart
             </div>
           </div>
           <div className="nav-inner-element">
             <div className="linked" onClick={handleRecentlyAddedClick}>
-              Settings
+              Profile
             </div>
           </div>
           <div className="nav-inner-element">

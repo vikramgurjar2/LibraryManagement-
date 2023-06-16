@@ -2,7 +2,7 @@ const passport = require("passport");
 const userSchema = require("../models/user");
 const bcrypt = require("bcryptjs");
 const genUID = require("./generateUID")
-
+const { checkvalidation } = require("./checkValid");
 exports.allUser = async (req, res) => {
     try {
         // Retrieve the list of users from the database
@@ -25,9 +25,15 @@ exports.registerUser = async (req, res) => {
         const userType = "user";
         const phone = req.body.phone;
         const uniqueId = genUID();;
+        const check = checkvalidation(req.body);
+        if (check.status == 400) {
+            return res.status(202).json({ msg: check.message });
+        }
 
-        let doc = await userSchema.findOne({ username: username })
-        if (!doc) {
+
+        let usernameC = await userSchema.findOne({ username: username })
+
+        if (!usernameC) {
             const user = new userSchema({
                 name: name,
                 username: username,
@@ -39,8 +45,8 @@ exports.registerUser = async (req, res) => {
             await user.save();
             return res.status(200).json({ msg: "User Added SuccessFully" });
 
-        } else if (doc) {
-            return res.status(400).json({ msg: " User Already Exist" });
+        } else if (usernameC) {
+            return res.status(202).json({ msg: " User Already Exist" });
         }
     }
     catch (error) {

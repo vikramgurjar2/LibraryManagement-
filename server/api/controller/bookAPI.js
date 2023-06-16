@@ -105,9 +105,8 @@ exports.addToCart = async (req, res) => {
 
 
 exports.checkout = async (req, res) => {
-
     try {
-        const { username, duedate } = req.body;
+        const { username } = req.body;
         console.log(username);
         const user = await userSchema.findOne({ username });
 
@@ -119,11 +118,11 @@ exports.checkout = async (req, res) => {
         const borrowedBooks = [];
 
         for (let i = 0; i < booksInCart.length; i++) {
-            const ISBN = booksInCart[i];
-            const book = await bookSchema.findOne({ ISBN });
+            const isbn = booksInCart[i].isbn;
+            const book = await bookSchema.findOne({ ISBN: isbn });
 
             if (!book) {
-                return res.status(400).json({ msg: `Book with ISBN ${ISBN} not found` });
+                return res.status(400).json({ msg: `Book with ISBN ${isbn} not found` });
             }
 
             if (book.ItemCount > 0) {
@@ -135,10 +134,10 @@ exports.checkout = async (req, res) => {
                 borrowedBooks.push({
                     isbn: book.ISBN,
                     takenDate: new Date(),// Set the due date as per your requirements
-                    dueDate: duedate// Set the due date as per your requirements
+
                 });
             } else {
-                return res.status(400).json({ msg: `Book with ISBN ${ISBN} is out of stock` });
+                return res.status(400).json({ msg: `Book with ISBN ${isbn} is out of stock` });
             }
         }
 
@@ -251,7 +250,7 @@ exports.filter = async (req, res) => {
 
 exports.booksInCart = async (req, res) => {
     try {
-        const { username } = req.body;
+        const username = req.params.username;
 
         // Find the user
         const user = await userSchema.findOne({ username });

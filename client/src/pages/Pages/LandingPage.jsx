@@ -1,8 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../Assets/css/landing.css";
 
 const LandingPage = () => {
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleImageLoad = () => {
     setIsLoading(false);
@@ -13,8 +21,10 @@ const LandingPage = () => {
       <div className="land-inner-top">
         <div className={`land-banner-image ${isLoading ? "loading" : ""}`}>
           {isLoading && (
-            <div className="loader-container">
-              <div className="loader"></div>
+            <div className="loaders book">
+              <figure className="page"></figure>
+              <figure className="page"></figure>
+              <figure className="page"></figure>
             </div>
           )}
           <img

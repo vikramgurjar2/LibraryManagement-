@@ -21,7 +21,7 @@ router.post("/returnBooks", bookController.returnBooks);
 router.post("/filter/", bookController.returnBooks);
 router.post("/removeFromCart", bookController.removeFromCart);
 router.get("/filter/:genre/:year/:title", bookController.filter);
-router.get("/booksInCart", bookController.booksInCart);
+router.get("/booksInCart/:username", bookController.booksInCart);
 
 
 
