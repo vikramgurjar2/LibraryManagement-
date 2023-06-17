@@ -113,6 +113,25 @@ exports.logout = (req, res, nect) => {
         }
     });
 };
+exports.userDetail = async (req, res) => {
+    const uniqueId = req.params.id;
+
+    try {
+        // Find the user based on the uniqueId
+        const user = await userSchema.findOne({ uniqueId });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Return the user data as the API response
+        return res.status(200).json(user);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
 
 
 

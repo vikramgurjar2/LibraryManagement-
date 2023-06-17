@@ -8,7 +8,8 @@ import axios from "axios";
 import Navbar from "./pages/Components/Navbar";
 import LandingPage from "./pages/Pages/LandingPage";
 import Cart from "./pages/Pages/Cart/Cart";
-
+import EditProfile from "./pages/Pages/Profile/EditProfile"
+import Borrower from "./pages/Pages/Cart/Borrower";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -64,6 +65,16 @@ function App() {
               exact
               path="/profile"
               element={user ? <Profile user={user} /> : <Navigate to="/home" />}
+            />
+            <Route
+              exact
+              path="/edit/:id"
+              element={user ? <EditProfile user={user} /> : <Navigate to="/home" />}
+            />
+            <Route
+              exact
+              path="/borrower"
+              element={user ? <Borrower user={user} /> : <Navigate to="/home" />}
             />
           </Routes>
         )}

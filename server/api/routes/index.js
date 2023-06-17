@@ -12,6 +12,7 @@ router.post("/updateUser", userController.updateUser);
 router.post("/login", userController.loginUser);
 router.post("/logout", userController.logout);
 router.get("/logedinuser", userController.userDetails);
+router.get("/userDetail/:id", userController.userDetail);
 
 router.post("/addBook", bookController.addBook);
 router.get("/allBook", bookController.getAllBooks);
@@ -23,6 +24,7 @@ router.post("/filter/", bookController.returnBooks);
 router.post("/removeFromCart", bookController.removeFromCart);
 router.get("/filter/:genre/:year/:title", bookController.filter);
 router.get("/booksInCart/:username", bookController.booksInCart);
+router.get("/borrowedBooks", bookController.borrowedBooks);
 
 
 

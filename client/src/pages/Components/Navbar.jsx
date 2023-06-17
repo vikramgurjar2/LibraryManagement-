@@ -5,7 +5,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Navbar = () => {
+const Navbar = ({ user }) => {
   const navigate = useNavigate();
 
   const handleHomeClick = () => {
@@ -16,7 +16,8 @@ const Navbar = () => {
     navigate("/profile");
   };
   const handelCart = () => {
-    navigate("/cart");
+    if(user.userType =="user"){navigate("/cart");}
+    else{navigate("/borrower");}
   };
   const handleLogout = async () => {
     await axios
@@ -72,14 +73,34 @@ const Navbar = () => {
             </div>
           </div>
           <div className="nav-inner-element">
-            <div className="linked" onClick={handleHomeClick}>
-              Books
-            </div>
+            {user.userType == "user" ? (
+              <>
+                <div className="linked" onClick={handleHomeClick}>
+                  Books
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="linked" onClick={handleHomeClick}>
+                  Members
+                </div>
+              </>
+            )}
           </div>
           <div className="nav-inner-element">
-            <div className="linked" onClick={handelCart}>
-              Cart
-            </div>
+            {user.userType == "user" ? (
+              <>
+                <div className="linked" onClick={handelCart}>
+                  Cart
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="linked" onClick={handelCart}>
+                  Borrower
+                </div>
+              </>
+            )}
           </div>
           <div className="nav-inner-element">
             <div className="linked" onClick={handleRecentlyAddedClick}>

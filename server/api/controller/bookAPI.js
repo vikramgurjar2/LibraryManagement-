@@ -155,10 +155,10 @@ exports.checkout = async (req, res) => {
 
 exports.returnBooks = async (req, res) => {
     try {
-        const { username, isbn } = req.body;
+        const { uniqueId, isbn } = req.body;
 
         // Find the user
-        const user = await userSchema.findOne({ username });
+        const user = await userSchema.findOne({ uniqueId });
 
         if (!user) {
             return res.status(404).json({ msg: 'User not found' });
@@ -276,3 +276,44 @@ exports.booksInCart = async (req, res) => {
         return res.status(500).json({ msg: 'Internal Server Error' });
     }
 };
+exports.borrowedBooks = async (req, res) => {
+    try {
+        const users = await userSchema.find({ borrowed: { $exists: true, $ne: [] } });
+
+        if (users.length === 0) {
+            return res.status(404).json({ msg: "No borrowed books found" });
+        }
+
+        const borrowedBooks = [];
+
+        for (const user of users) {
+            for (const book of user.borrowed) {
+                const borrowedBook = {
+                    isbn: book.isbn,
+                    title: "",
+                    author: "",
+                    uid: user.uniqueId,
+                    borrower: user.name,
+                    takenDate: book.takenDate,
+                };
+
+                const bookDetails = await bookSchema.findOne({ ISBN: book.isbn });
+                console.log(bookDetails);
+                if (bookDetails) {
+                    borrowedBook.title = bookDetails.Title;
+                    borrowedBook.author = bookDetails.Author;
+                } else {
+                    borrowedBook.title = "Unknown";
+                    borrowedBook.author = "Unknown";
+                }
+
+                borrowedBooks.push(borrowedBook);
+            }
+        }
+
+        return res.status(200).json(borrowedBooks);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ msg: "Internal Server Error" });
+    }
+}

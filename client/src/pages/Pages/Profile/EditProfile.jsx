@@ -1,61 +1,82 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../Assets/css/profile.css";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useParams } from "react-router-dom";
 
-const Profile = ({ user }) => {
+const EditProfile = () => {
+  const { id } = useParams();
+  const [user, setUser] = useState(null);
+  const [data, setData] = useState({
+    name: "",
+    username: "",
+    phone: "",
+    address: "",
+    uniqueId: "",
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/userDetail/${id}`
+        );
+        setUser(response.data);
+        setData({
+          name: response.data.name,
+          username: response.data.username,
+          phone: response.data.phone,
+          address: response.data.address,
+          uniqueId: response.data.uniqueId,
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  const handleInputs = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
+
+  const submitForm = async () => {
+    try {
+      await axios.post(`http://localhost:5000/updateUser`, data);
+      toast.success("Profile updated successfully", {
+        position: "top-center",
+        autoClose: 2000,
+        pauseOnHover: false,
+        pauseOnFocusLoss: false,
+        draggable: true,
+        textAlign: "center",
+      });
+      setTimeout(() => {
+        window.location.href = "/home";
+      }, 1500);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to update profile", {
+        position: "top-center",
+        autoClose: 2000,
+        pauseOnHover: false,
+        pauseOnFocusLoss: false,
+        draggable: true,
+        textAlign: "center",
+      });
+    }
+  };
+
+  if (!user) {
+    return <div>Loading...</div>; // Display a loading indicator while fetching user data
+  }
+
   const dateStr = user.createdAt;
   const date = new Date(dateStr);
   const options = { day: "numeric", month: "long", year: "numeric" };
   const formattedDate = date.toLocaleDateString("en-US", options);
-
-  const [data, setData] = useState({
-    name: user.name,
-    username: user.username,
-    phone: user.phone,
-    address: user.address,
-    uniqueId: user.uniqueId,
-  });
-  const handleInputs = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
-    // setData({ ...data, uniqueId: user.uniqueId });
-    console.log(data);
-  };
-  const submitForm = async () => {
-    // alert("Submitted")
-    await axios
-      .post(`http://localhost:5000/updateUser`, data)
-      .then((response) => {
-        var message = response.data.msg;
-        var status = response.status;
-        console.log(message);
-
-        if (status === 200) {
-          toast.success(`${message}`, {
-            position: "top-center",
-            autoClose: 2000,
-            pauseOnHover: false,
-            pauseOnFocusLoss: false,
-            draggable: true,
-            textAlign: "center",
-          });
-          setTimeout(() => {
-            window.location.href = "/profile";
-          }, 1500);
-          // window.location.reload();
-        } else if (status === 202) {
-          toast.warn(`${message}`, {
-            position: "top-center",
-            autoClose: 2000,
-            pauseOnHover: false,
-            pauseOnFocusLoss: false,
-            draggable: true,
-            textAlign: "center",
-          });
-        }
-      });
-  };
 
   return (
     <div style={{ paddingBlockStart: "4rem" }}>
@@ -209,7 +230,7 @@ const Profile = ({ user }) => {
                   fontFamily: "poppins",
                 }}
               >
-                Edit Your Profile
+                Edit Profile
               </div>
               <div
                 style={{
@@ -284,46 +305,6 @@ const Profile = ({ user }) => {
                 <ToastContainer />
               </div>
             </div>
-            <div>
-              <div
-                style={{
-                  margin: "1rem",
-                  backgroundColor: "white",
-                  borderRadius: "2rem",
-                  boxShadow: "1px 1px 21px -3px rgba(0,0,0,10.75)",
-                }}
-              >
-                <div
-                  style={{
-                    margin: "0.5rem",
-                    display: "flex",
-                    padding: "1rem 0 0 1rem",
-                    fontSize: "2rem",
-                    fontWeight: "600",
-                    fontFamily: "poppins",
-                  }}
-                >
-                  Any Query Or Feedbak ?
-                </div>
-                <div
-                  style={{
-                    margin: "0.5rem",
-                    display: "flex",
-                    padding: "0.5rem",
-                  }}
-                >
-                  <textarea
-                    style={{ width: "100%", fontFamily: "poppins" }}
-                    type="text"
-                    class="login-input"
-                    name="query"
-                    placeholder="Write Something ..."
-                    defaultValue="I like to suggest You ....."
-                    rows={6}
-                  />
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -331,4 +312,4 @@ const Profile = ({ user }) => {
   );
 };
 
-export default Profile;
+export default EditProfile;
