@@ -19,6 +19,7 @@ const HomePage = ({ user }) => {
         <>
           <div className="home-inner-top">
             <Banner user={user} />
+            <DummyData />
             <AllMember user={user} />
           </div>
         </>
