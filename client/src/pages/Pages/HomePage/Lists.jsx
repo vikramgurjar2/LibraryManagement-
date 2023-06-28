@@ -7,6 +7,15 @@ const Lists = ({ user }) => {
   const [selectedBooks, setSelectedBooks] = useState([]);
   const navigate = useNavigate();
 
+  const [filter, setfilter] = useState({
+    search: "-",
+  });
+
+  const handleInputs = (e) => {
+    setfilter({ ...filter, [e.target.name]: e.target.value });
+    console.log(filter);
+  };
+
   //handle clicks
   // console.log(user);
   const addToCart = async () => {
@@ -27,14 +36,31 @@ const Lists = ({ user }) => {
 
   const fetchData = async () => {
     // setInterval(async () => {
-    const response = await axios.get("http://localhost:5000/allBook");
+    let search = filter.search;
+    if (search.length == 0) {
+      search = "-";
+    }
+    const response = await axios.get(`http://localhost:5000/search/${search}`);
+    if (response.length == 0) {
+      response = await axios.get(`http://localhost:5000/allBook`);
+    }
     setData(response.data.books);
     // }, 1500);
   };
   // console.log(data);
   useEffect(() => {
-    fetchData();
-  }, []);
+    let delayTimer;
+    const handleFilterChange = () => {
+      clearTimeout(delayTimer);
+      delayTimer = setTimeout(fetchData, 1500);
+    };
+
+    handleFilterChange();
+
+    return () => {
+      clearTimeout(delayTimer);
+    };
+  }, [filter]);
 
   const handleBookClick = (id) => {
     navigate(`/book/${id}`);
@@ -98,6 +124,16 @@ const Lists = ({ user }) => {
               src="https://raw.githubusercontent.com/AnuragRoshan/images/e8666db54a2712302f33449ec4ab8454ec7e1400/undraw_selection_re_ycpo.svg"
               alt=""
               srcset=""
+            />
+          </div>
+          <div class="login-field ">
+            <input
+              type="text"
+              class="login-input"
+              placeholder="Search Books"
+              name="search"
+              style={{ width: "40%", marginInlineStart: "5rem" }}
+              onChange={(e) => handleInputs(e)}
             />
           </div>
           <div style={{ justifyContent: "center", paddingInlineStart: "5rem" }}>

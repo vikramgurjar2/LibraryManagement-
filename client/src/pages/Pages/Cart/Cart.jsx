@@ -12,6 +12,7 @@ const Cart = ({ user }) => {
         `http://localhost:5000/booksInCart/${user.username}`
       );
       setData(response.data.books);
+      console.log(data);
       setIsLoading(false); // Set isLoading to false when data is fetched
     } catch (error) {
       console.error(error);
@@ -93,11 +94,24 @@ const Cart = ({ user }) => {
                           marginBlockEnd: "1rem",
                         }}
                       >
+                        <div>
+                          <img
+                            src="https://covers.openlibrary.org/b/isbn/1933988746-L.jpg"
+                            alt=""
+                            srcset=""
+                            style={{
+                              width: "5rem",
+                              height: "6rem",
+                              marginTop: "0rem",
+                              padding: "0.4rem 1rem",
+                            }}
+                          />
+                        </div>
                         <div
                           style={{
                             fontFamily: "poppins",
                             padding: "0.4rem 1rem",
-                            fontSize: "0.7rem",
+                            fontSize: "0.9rem",
                           }}
                         >
                           <div>Title : {d.Title}</div>

@@ -100,6 +100,7 @@ const AllMember = ({ user }) => {
               srcset=""
             />
           </div>
+
           <div style={{ justifyContent: "center", paddingInlineStart: "5rem" }}>
             <table className="table">
               <thead style={{ backgroundColor: "#3d5a80", color: "white" }}>

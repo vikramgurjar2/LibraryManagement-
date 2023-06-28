@@ -47,6 +47,10 @@ exports.getAllBooks = async (req, res) => {
 exports.searchBooks = async (req, res) => {
     try {
         const searchText = req.params.id;
+        if (searchText == "-") {
+            const books = await bookSchema.find();
+            return res.status(200).json({ books });
+        }
         const regex = new RegExp(searchText, 'i'); // 'i' flag for case-insensitive search
         const books = await bookSchema.find({ Title: { $regex: regex } }).limit(4);
         res.status(200).json({ books });
