@@ -41,7 +41,7 @@ const LandingPage = () => {
             <div className="land-motto">Discover, Learn, Grow</div>
             <div className="land-button">
               <a className="landing-button-hover" href="/home">
-                <span>GO!</span>
+                <span>GO!!</span>
               </a>
             </div>
           </div>

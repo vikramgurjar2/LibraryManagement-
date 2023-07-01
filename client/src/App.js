@@ -12,19 +12,24 @@ import EditProfile from "./pages/Pages/Profile/EditProfile"
 import Borrower from "./pages/Pages/Cart/Borrower";
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({
+    "name": "Anurag Roshan",
+    "username": "anuragraushan373@gmail.com",
+    "phone": "8210003602",
+    "uniqueId": "20230615221610"
+  });
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchData = async () => {
-    try {
-      const { data } = await axios.get(`https://librarymanagementbackend.onrender.com/logedinuser/`, { withCredentials: true });
-      setUser(data.user);
-    } catch (error) {
-      // Handle error
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // const fetchData = async () => {
+  //   try {
+  //     const { data } = await axios.get(`https://librarymanagementbackend.onrender.com/logedinuser/`, { withCredentials: true });
+  //     setUser(data.user);
+  //   } catch (error) {
+  //     // Handle error
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   useEffect(() => {
     fetchData();

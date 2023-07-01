@@ -34,7 +34,7 @@ app.use(
         secret: "secretcode",
         resave: true,
         saveUninitialized: true,
-        cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000, prioroty: "Low" }
+        cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000, prioroty: "High" }
     })
 );
 app.use(cookieParser(process.env.SECRET));
