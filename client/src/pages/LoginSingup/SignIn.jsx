@@ -33,7 +33,7 @@ const Signin = () => {
               draggable: true,
               textAlign: "center",
             });
-            window.location.href("/profile");
+            window.location.href = "/profile";
           } else if (status === "202") {
             toast.warn(`${message}`, {
               position: "top-center",
