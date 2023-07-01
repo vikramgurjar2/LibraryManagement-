@@ -14,7 +14,7 @@ const BorrowList = () => {
     //   const send = { books: books, username: username };
     //   console.log(send);
     //   await axios
-    //     .post(`http://localhost:5000/addToCart`, send, {})
+    //     .post(`https://librarymanagementbackend.onrender.com/addToCart`, send, {})
     //     .then((response) => {
     //       console.log(response);
     //     });
@@ -26,7 +26,9 @@ const BorrowList = () => {
 
   const fetchData = async () => {
     // setInterval(async () => {
-    const response = await axios.get("http://localhost:5000/borrowedBooks");
+    const response = await axios.get(
+      "https://librarymanagementbackend.onrender.com/borrowedBooks"
+    );
     setData(response.data);
     // }, 1500);
     console.log(response.data);

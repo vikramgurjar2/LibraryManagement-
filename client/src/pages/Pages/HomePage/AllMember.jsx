@@ -15,7 +15,7 @@ const AllMember = ({ user }) => {
     const send = { books: books, username: username };
     console.log(send);
     await axios
-      .post(`http://localhost:5000/addToCart`, send, {})
+      .post(`https://librarymanagementbackend.onrender.com/addToCart`, send, {})
       .then((response) => {
         console.log(response);
       });
@@ -27,7 +27,9 @@ const AllMember = ({ user }) => {
 
   const fetchData = async () => {
     // setInterval(async () => {
-    const response = await axios.get("http://localhost:5000/allUser");
+    const response = await axios.get(
+      "https://librarymanagementbackend.onrender.com/allUser"
+    );
     setData(response.data);
     // }, 1500);
   };

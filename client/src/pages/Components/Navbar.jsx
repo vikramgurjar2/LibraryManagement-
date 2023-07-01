@@ -24,7 +24,7 @@ const Navbar = ({ user }) => {
   };
   const handleLogout = async () => {
     await axios
-      .post(`http://localhost:5000/logout`, null, {
+      .post(`https://librarymanagementbackend.onrender.com/logout`, null, {
         withCredentials: true,
       })
       .then((response) => {
