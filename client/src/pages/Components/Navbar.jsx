@@ -16,12 +16,15 @@ const Navbar = ({ user }) => {
     navigate("/profile");
   };
   const handelCart = () => {
-    if(user.userType =="user"){navigate("/cart");}
-    else{navigate("/borrower");}
+    if (user.userType == "user") {
+      navigate("/cart");
+    } else {
+      navigate("/borrower");
+    }
   };
   const handleLogout = async () => {
     await axios
-      .post(`http://localhost:5000/logout`, null, {
+      .post(`https://librarymanagementbackend.onrender.com/logout`, null, {
         withCredentials: true,
       })
       .then((response) => {
