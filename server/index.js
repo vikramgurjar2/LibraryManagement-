@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
     cors({
-        origin: "https://adorable-maamoul-4751c8.netlify.app/", // <-- location of the react app were connecting to
+        origin: "https://librarymanagementfrontend.onrender.com/", // <-- location of the react app were connecting to
         credentials: true,
     })
 );
