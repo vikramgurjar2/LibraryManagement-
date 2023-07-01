@@ -9,7 +9,7 @@ const Cart = ({ user }) => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://librarymanagementbackend.onrender.com/booksInCart/${user.username}`
+        `http://localhost:5000/booksInCart/${user.username}`
       );
       setData(response.data.books);
       console.log(data);
@@ -23,7 +23,7 @@ const Cart = ({ user }) => {
     const username = user.username;
     const send = { username: username };
     await axios
-      .post(`https://librarymanagementbackend.onrender.com/checkout`, send)
+      .post(`http://localhost:5000/checkout`, send)
       .then((response) => {
         console.log(response);
       });

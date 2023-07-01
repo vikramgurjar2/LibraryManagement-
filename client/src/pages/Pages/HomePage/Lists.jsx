@@ -24,7 +24,7 @@ const Lists = ({ user }) => {
     const send = { books: books, username: username };
     console.log(send);
     await axios
-      .post(`https://librarymanagementbackend.onrender.com/addToCart`, send, {})
+      .post(`http://localhost:5000/addToCart`, send, {})
       .then((response) => {
         console.log(response);
       });
@@ -40,13 +40,9 @@ const Lists = ({ user }) => {
     if (search.length == 0) {
       search = "-";
     }
-    const response = await axios.get(
-      `https://librarymanagementbackend.onrender.com/search/${search}`
-    );
+    const response = await axios.get(`http://localhost:5000/search/${search}`);
     if (response.length == 0) {
-      response = await axios.get(
-        `https://librarymanagementbackend.onrender.com/allBook`
-      );
+      response = await axios.get(`http://localhost:5000/allBook`);
     }
     setData(response.data.books);
     // }, 1500);

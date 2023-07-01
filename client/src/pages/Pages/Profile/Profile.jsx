@@ -25,7 +25,7 @@ const Profile = ({ user }) => {
   const submitForm = async () => {
     // alert("Submitted")
     await axios
-      .post(`https://librarymanagementbackend.onrender.com/updateUser`, data)
+      .post(`http://localhost:5000/updateUser`, data)
       .then((response) => {
         var message = response.data.msg;
         var status = response.status;

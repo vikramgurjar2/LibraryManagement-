@@ -17,7 +17,7 @@ import "react-toastify/dist/ReactToastify.css";
 //   const submitForm = async () => {
 //     // alert("Submitted")
 //     await axios
-//       .post(`https://librarymanagementbackend.onrender.com/register`, user)
+//       .post(`http://localhost:5000/register`, user)
 //       .then((response) => {
 //         var message = response.data.msg;
 //         var status = response.status;
@@ -112,7 +112,7 @@ const SignUp = () => {
   const submitForm = async () => {
     // alert("Submitted")
     await axios
-      .post(`https://librarymanagementbackend.onrender.com/register`, user)
+      .post(`http://localhost:5000/register`, user)
       .then((response) => {
         var message = response.data.msg;
         var status = response.status;
