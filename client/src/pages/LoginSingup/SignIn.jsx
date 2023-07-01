@@ -15,48 +15,52 @@ const Signin = () => {
   };
 
   const submitForm = async () => {
+    try {
+      await axios
+        .post(`https://librarymanagementbackend.onrender.com/login`, user, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          console.log(response);
+          var message = response.data.message;
+          var status = response.data.status;
+          if (status === "200") {
+            toast.success(`${message}`, {
+              position: "top-center",
+              autoClose: 2000,
+              pauseOnHover: false,
+              pauseOnFocusLoss: false,
+              draggable: true,
+              textAlign: "center",
+            });
+            window.location.reload();
+          } else if (status === "202") {
+            toast.warn(`${message}`, {
+              position: "top-center",
+              autoClose: 2000,
+              pauseOnHover: false,
+              pauseOnFocusLoss: false,
+              draggable: true,
+              textAlign: "center",
+              theme: "dark",
+            });
+          } else if (status === "500") {
+            toast.error(`${message}`, {
+              position: "top-center",
+              autoClose: 2000,
+              pauseOnHover: false,
+              pauseOnFocusLoss: false,
+              draggable: true,
+              textAlign: "center",
+              theme: "dark",
+            });
+          }
+          // Navigate("/");
+        });
+    } catch (err) {
+      console.log(err);
+    }
     // alert("Submitted");
-    await axios
-      .post(`https://librarymanagementbackend.onrender.com/login`, user, {
-        withCredentials: true,
-      })
-      .then((response) => {
-        console.log(response);
-        var message = response.data.message;
-        var status = response.data.status;
-        if (status === "200") {
-          toast.success(`${message}`, {
-            position: "top-center",
-            autoClose: 2000,
-            pauseOnHover: false,
-            pauseOnFocusLoss: false,
-            draggable: true,
-            textAlign: "center",
-          });
-          window.location.reload();
-        } else if (status === "202") {
-          toast.warn(`${message}`, {
-            position: "top-center",
-            autoClose: 2000,
-            pauseOnHover: false,
-            pauseOnFocusLoss: false,
-            draggable: true,
-            textAlign: "center",
-            theme: "dark",
-          });
-        } else if (status === "500") {
-          toast.error(`${message}`, {
-            position: "top-center",
-            autoClose: 2000,
-            pauseOnHover: false,
-            pauseOnFocusLoss: false,
-            draggable: true,
-            textAlign: "center",
-            theme: "dark",
-          });
-        }
-        // Navigate("/");
-      });
   };
 
   const img1 =
