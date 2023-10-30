@@ -20,7 +20,7 @@ const EditProfile = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://librarymanagementbackend.onrender.com/userDetail/${id}`
+          `http://localhost:5000/userDetail/${id}`
         );
         setUser(response.data);
         setData({
@@ -44,10 +44,7 @@ const EditProfile = () => {
 
   const submitForm = async () => {
     try {
-      await axios.post(
-        `https://librarymanagementbackend.onrender.com/updateUser`,
-        data
-      );
+      await axios.post(`http://localhost:5000/updateUser`, data);
       toast.success("Profile updated successfully", {
         position: "top-center",
         autoClose: 2000,

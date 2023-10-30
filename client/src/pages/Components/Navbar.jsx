@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "../Assets/css/navbar.css";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Navbar = ({ user }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleHomeClick = () => {
     navigate("/home");
@@ -15,16 +16,18 @@ const Navbar = ({ user }) => {
   const handleRecentlyAddedClick = () => {
     navigate("/profile");
   };
+
   const handelCart = () => {
-    if (user.userType == "user") {
+    if (user.userType === "user") {
       navigate("/cart");
     } else {
       navigate("/borrower");
     }
   };
+
   const handleLogout = async () => {
     await axios
-      .post(`https://librarymanagementbackend.onrender.com/logout`, null, {
+      .post(`http://localhost:5000/logout`, null, {
         withCredentials: true,
       })
       .then((response) => {
@@ -44,7 +47,6 @@ const Navbar = ({ user }) => {
           setTimeout(() => {
             window.location.href = "/";
           }, 1500);
-          // window.location.reload();
         } else if (status === 202) {
           toast.warn(`${message}`, {
             position: "top-center",
@@ -57,6 +59,9 @@ const Navbar = ({ user }) => {
         }
       });
   };
+
+  // Function to determine whether a link should be underlined
+  const isLinkActive = (path) => location.pathname === path;
 
   return (
     <div>
@@ -76,42 +81,42 @@ const Navbar = ({ user }) => {
             </div>
           </div>
           <div className="nav-inner-element">
-            {user.userType == "user" ? (
-              <>
-                <div className="linked" onClick={handleHomeClick}>
-                  Books
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="linked" onClick={handleHomeClick}>
-                  Members
-                </div>
-              </>
-            )}
+            <div
+              className={`linked ${
+                isLinkActive("/home") ? "underline-link" : ""
+              }`}
+              onClick={handleHomeClick}
+            >
+              Books
+            </div>
           </div>
           <div className="nav-inner-element">
-            {user.userType == "user" ? (
-              <>
-                <div className="linked" onClick={handelCart}>
-                  Cart
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="linked" onClick={handelCart}>
-                  Borrower
-                </div>
-              </>
-            )}
+            <div
+              className={`linked ${
+                isLinkActive("/borrower") || isLinkActive("/cart")
+                  ? "underline-link"
+                  : ""
+              }`}
+              onClick={handelCart}
+            >
+              {user.userType === "user" ? "Cart" : "Borrower"}
+            </div>
           </div>
           <div className="nav-inner-element">
-            <div className="linked" onClick={handleRecentlyAddedClick}>
+            <div
+              className={`linked ${
+                isLinkActive("/profile") ? "underline-link" : ""
+              }`}
+              onClick={handleRecentlyAddedClick}
+            >
               Profile
             </div>
           </div>
           <div className="nav-inner-element">
-            <div className="linked" onClick={handleLogout}>
+            <div
+              className={`linked ${isLinkActive("/") ? "underline-link" : ""}`}
+              onClick={handleLogout}
+            >
               Logout
             </div>
           </div>

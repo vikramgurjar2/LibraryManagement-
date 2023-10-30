@@ -13,54 +13,68 @@ const Signin = () => {
     setUser({ ...user, [e.target.name]: e.target.value });
     console.log(user);
   };
-
   const submitForm = async () => {
+    console.log(user);
+
     try {
-      await axios
-        .post(`https://librarymanagementbackend.onrender.com/login`, user, {
-          withCredentials: true,
-        })
-        .then((response) => {
-          console.log(response);
-          var message = response.data.message;
-          var status = response.data.status;
-          if (status === "200") {
-            toast.success(`${message}`, {
-              position: "top-center",
-              autoClose: 2000,
-              pauseOnHover: false,
-              pauseOnFocusLoss: false,
-              draggable: true,
-              textAlign: "center",
-            });
-            window.location.href = "/profile";
-          } else if (status === "202") {
-            toast.warn(`${message}`, {
-              position: "top-center",
-              autoClose: 2000,
-              pauseOnHover: false,
-              pauseOnFocusLoss: false,
-              draggable: true,
-              textAlign: "center",
-              theme: "dark",
-            });
-          } else if (status === "500") {
-            toast.error(`${message}`, {
-              position: "top-center",
-              autoClose: 2000,
-              pauseOnHover: false,
-              pauseOnFocusLoss: false,
-              draggable: true,
-              textAlign: "center",
-              theme: "dark",
-            });
-          }
-          // Navigate("/");
+      const response = await axios.post(`http://localhost:5000/login`, user, {
+        withCredentials: true,
+      });
+
+      console.log(response);
+
+      const message = response.data.message;
+      const status = response.data.status;
+
+      if (status === "200") {
+        toast.success(message, {
+          position: "top-center",
+          autoClose: 2000,
+          pauseOnHover: false,
+          pauseOnFocusLoss: false,
+          draggable: true,
+          textAlign: "center",
         });
-    } catch (err) {
-      console.log(err);
+        window.location.href = "/profile";
+      } else if (status === "202") {
+        toast.warn(message, {
+          position: "top-center",
+          autoClose: 2000,
+          pauseOnHover: false,
+          pauseOnFocusLoss: false,
+          draggable: true,
+          textAlign: "center",
+          theme: "dark",
+        });
+      } else if (status === "500") {
+        toast.error(message, {
+          position: "top-center",
+          autoClose: 2000,
+          pauseOnHover: false,
+          pauseOnFocusLoss: false,
+          draggable: true,
+          textAlign: "center",
+          theme: "dark",
+        });
+      }
+      // You can choose to navigate here if needed.
+    } catch (error) {
+      console.error("An error occurred:", error);
+
+      // Handle network errors gracefully
+      if (error.message === "Network Error") {
+        toast.error("Network error. Please check your internet connection.", {
+          position: "top-center",
+          autoClose: 2000,
+          pauseOnHover: false,
+          pauseOnFocusLoss: false,
+          draggable: true,
+          textAlign: "center",
+          theme: "dark",
+        });
+      }
     }
-    // alert("Submitted");
+    // Optionally, show an alert message or perform other actions.
   };
 
   const img1 =

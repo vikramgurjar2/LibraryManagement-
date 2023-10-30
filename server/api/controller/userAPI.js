@@ -86,6 +86,7 @@ exports.updateUser = async (req, res) => {
 
 
 exports.loginUser = (req, res, next) => {
+    console.log(req.body);
     passport.authenticate("local", (err, user, info) => {
         // console.log(err);
         if (err) res.send({ status: "500", message: "Try Again Later" });

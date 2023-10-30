@@ -15,7 +15,7 @@ const AllMember = ({ user }) => {
     const send = { books: books, username: username };
     console.log(send);
     await axios
-      .post(`https://librarymanagementbackend.onrender.com/addToCart`, send, {})
+      .post(`http://localhost:5000/addToCart`, send, {})
       .then((response) => {
         console.log(response);
       });
@@ -27,9 +27,7 @@ const AllMember = ({ user }) => {
 
   const fetchData = async () => {
     // setInterval(async () => {
-    const response = await axios.get(
-      "https://librarymanagementbackend.onrender.com/allUser"
-    );
+    const response = await axios.get("http://localhost:5000/allUser");
     setData(response.data);
     // }, 1500);
   };
@@ -89,7 +87,7 @@ const AllMember = ({ user }) => {
       {data.length > 0 ? (
         <>
           <div>
-            <img
+            {/* <img
               className="vert-move"
               style={{
                 width: "40%",
@@ -100,10 +98,16 @@ const AllMember = ({ user }) => {
               src="https://raw.githubusercontent.com/AnuragRoshan/images/3847f7937af6b50213195fa6db1a49f5e3194e21/undraw_team_page_re_cffb.svg"
               alt=""
               srcset=""
-            />
+            /> */}
           </div>
 
-          <div style={{ justifyContent: "center", paddingInlineStart: "5rem" }}>
+          <div
+            style={{
+              justifyContent: "center",
+              paddingInline: "1rem",
+              marginBlockStart: "1rem",
+            }}
+          >
             <table className="table">
               <thead style={{ backgroundColor: "#3d5a80", color: "white" }}>
                 <th style={{ width: "5rem", textAlign: "left" }}>#</th>
