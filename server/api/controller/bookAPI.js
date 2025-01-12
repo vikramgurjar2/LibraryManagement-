@@ -61,7 +61,9 @@ exports.searchBooks = async (req, res) => {
 
 
 exports.addToCart = async (req, res) => {
+    
     try {
+        console.log("trying to add on cart")
         const { username } = req.body;
         const books = req.body.books;
         if (!books || !Array.isArray(books) || books.length === 0) {
@@ -69,19 +71,22 @@ exports.addToCart = async (req, res) => {
         }
 
         const user = await userSchema.findOne({ username });
-
+        console.log("this is the user", user)
         if (!user) {
             return res.status(400).json({ msg: "User not found" });
         }
 
+
         for (let i = 0; i < books.length; i++) {
             const ISBN = books[i];
-            const book = await bookSchema.findOne({ ISBN });
-
+            console.log("this is the index", i)
+            console.log(ISBN)
+            const book = await bookSchema.findOne({ISBN});
+            console.log("this is the book", book)
             if (!book) {
                 return res.status(400).json({ msg: `Book with ISBN ${ISBN} not found` });
             }
-
+                console.log(book)
             if (book.ItemCount > 0) {
                 // Decrease item count of the book
                 // book.ItemCount -= 1;

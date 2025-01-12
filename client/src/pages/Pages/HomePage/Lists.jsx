@@ -18,19 +18,31 @@ const Lists = ({ user }) => {
 
   //handle clicks
   // console.log(user);
+
+  const addToCartCaller = async (send) => {
+    try {
+      await axios
+        .post(`http://localhost:5000/addToCart`, send, {})
+        .then((response) => {
+          console.log(response);
+        });
+
+      return { result: true, message: "added to cart" };
+    } catch (error) {
+      return { result: false, message: "request failed to add" };
+    }
+  };
+
   const addToCart = async () => {
     const books = selectedBooks;
     const username = user.username;
     const send = { books: books, username: username };
-    console.log(send);
-    await axios
-      .post(`http://localhost:5000/addToCart`, send, {})
-      .then((response) => {
-        console.log(response);
-      });
-    setTimeout(() => {
-      window.location.href = "/cart";
-    }, 500);
+    const { result, message } = await addToCartCaller(send);
+    if (result) {
+      window.location.href = "/Cart";
+    } else {
+      alert(message);
+    }
   };
   // console.log(selectedBooks);
 

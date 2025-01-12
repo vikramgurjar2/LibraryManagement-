@@ -194,13 +194,14 @@ const Profile = ({ user }) => {
             <div
               style={{
                 margin: "1rem",
-                backgroundColor: "white",
+                backgroundColor: "#cfe6f9",
                 borderRadius: "2rem",
                 boxShadow: "1px 1px 21px -3px rgba(0,0,0,10.75)",
               }}
             >
               <div
                 style={{
+                  color: "#539cda",
                   margin: "0.5rem",
                   display: "flex",
                   padding: "1rem 0 0 1rem",
@@ -264,6 +265,7 @@ const Profile = ({ user }) => {
               </div>
               <div
                 style={{
+                  color: "#539cda",
                   margin: "0.5rem",
                   display: "flex",
                   padding: "0.5rem 0.5rem 2rem 0.5rem",
@@ -288,13 +290,14 @@ const Profile = ({ user }) => {
               <div
                 style={{
                   margin: "1rem",
-                  backgroundColor: "white",
+                  backgroundColor: "#cfe6f9",
                   borderRadius: "2rem",
                   boxShadow: "1px 1px 21px -3px rgba(0,0,0,10.75)",
                 }}
               >
                 <div
                   style={{
+                    color: "#539cda",
                     margin: "0.5rem",
                     display: "flex",
                     padding: "1rem 0 0 1rem",

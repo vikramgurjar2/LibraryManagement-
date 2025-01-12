@@ -65,19 +65,30 @@ const Navbar = ({ user }) => {
 
   return (
     <div>
-      <div className="nav-top">
-        <div className="nav-inner-top">
+      <div
+        className="nav-top"
+        style={{
+          textAlign: "center",
+        }}
+      >
+        <div
+          className="nav-inner-top"
+          style={{
+            textAlign: "center",
+          }}
+        >
           <div>
             <div
               onClick={handleHomeClick}
               style={{
+                textAlign: "center",
                 fontSize: "2.4rem",
-                marginRight: "25rem",
+                marginRight: "20rem",
                 fontWeight: "500",
                 cursor: "pointer",
               }}
             >
-              bookWise
+              Library
             </div>
           </div>
           <div className="nav-inner-element">

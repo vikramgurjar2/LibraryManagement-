@@ -14,6 +14,7 @@ router.post("/logout", userController.logout);
 router.get("/logedinuser", userController.userDetails);
 router.get("/userDetail/:id", userController.userDetail);
 
+//books api
 router.post("/addBook", bookController.addBook);
 router.get("/allBook", bookController.getAllBooks);
 router.get("/search/:id", bookController.searchBooks);
